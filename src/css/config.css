@@ -1,0 +1,13 @@
+.type-multiple-option{
+  display: none;
+}
+#add, #remove{
+  display: block;
+  background: url(<?APP_SRC?>/src/image/add.svg);
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+}
+#remove{
+  background: url(<?APP_SRC?>/src/image/remove.svg);
+}
