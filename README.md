@@ -45,18 +45,6 @@ The maximum number of children in classes i.e. the number of students in the cla
 
 Example: If 5A has `60` students and 5B has `63` students, then the value should be `63`
 
-### male-candidates
-
-Number of Male Candidates in the election
-
-### female-candidates
-
-Number of female candidates in the election
-
-### total-candidates
-
-Total candidates in the election
-
 ## Bethany
 
 Don't mind this if you are not from Bethany

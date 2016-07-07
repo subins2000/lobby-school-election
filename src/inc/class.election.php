@@ -10,52 +10,67 @@ class Election {
     $this->config = $app->config;
     $this->app = $app;
     
-    $this->maleCandidates = $this->app->getJSONData("male-candidates");
-    $this->femaleCandidates = $this->app->getJSONData("female-candidates");
-    $this->candidates = $this->maleCandidates + $this->femaleCandidates;
-    
+    $this->candidates = $this->app->getJSONData("candidates");
     return true;
  	}
  	
  	public function showCandidates(){
-    /**
-     * Boys Section
-     */
- 		echo "<div class='boys'>";
- 			echo "<h2>Boys</h2>";
- 			$this->candidates($this->maleCandidates);
- 		echo "</div>";
- 		
- 		/**
-     * Girls Section
-     */
- 		echo "<div class='girls'>";
- 			echo "<h2>Girls</h2>";
- 			$this->candidates($this->femaleCandidates);
- 		echo "</div>";
+    if($this->config["type"] === "multiple"){
+      /**
+       * Boys Section
+       */
+      echo "<div id='boys'>";
+        echo "<h2>Boys</h2>";
+        echo $this->makeCandidatesHTML($this->getCandidates("male"));
+      echo "</div>";
+      
+      /**
+       * Girls Section
+       */
+      echo "<div id='girls'>";
+        echo "<h2>Girls</h2>";
+        echo $this->makeCandidatesHTML($this->getCandidates("female"));
+      echo "</div>";
+    }else{
+      echo $this->makeCandidatesHTML($this->getCandidates());
+    }
  	}
  	
- 	public function candidates($data){
- 		if(count($data) == $this->config['female-candidates']){
+ 	public function makeCandidatesHTML($data){
+ 		$html = "";
+    if($this->isElection()){
       foreach($data as $id => $candidate){
- 			  echo "<div class='candidate'>";
- 				  echo "<label>";
-            echo "<input type='checkbox' name='candidates[]' value='$id' />";
-            echo "<span>$candidate</span>";
-          echo "</label>";
-   			echo "</div>";
+ 			  $html .= "<div class='candidate'>";
+ 				  $html .= "<label>";
+            $html .= "<input type='checkbox' name='candidates[]' value='$id' />";
+            $html .= "<span>{$candidate["name"]}</span>";
+          $html .= "</label>";
+   			$html .= "</div>";
  		  }
+      return $html;
     }else{
-      echo "No Candidates Found";
+      return "No Candidates Found";
     }
  	}
   
-  public function getCandidates(){
-    return $this->candidates;
+  public function getCandidates($gender = null){
+    if($gender === null)
+      return $this->candidates;
+    
+    if($this->isElection() && empty($this->maleCandidates) && empty($this->femaleCandidates)){
+      foreach($this->candidates as $id => $candidate){
+        if($candidate["gender"] === "m")
+          $this->maleCandidates[$id] = $candidate;
+        else
+          $this->femaleCandidates[$id] = $candidate;
+      }
+    }
+    
+    return $gender === "male" ? $this->maleCandidates : $this->femaleCandidates;
   }
   
   public function getCandidateName($id){
-    return $this->candidates[$id];
+    return $this->candidates[$id]["name"];
   }
  	
  	/**
@@ -90,29 +105,16 @@ class Election {
  	}
  	
  	/**
-   * See if Election Is Already Started
+   * See if election has started
+   * If there are candidates, then election has started
    */
  	public function isElection($type = ""){
- 		if($type == ""){
- 			$maleCandidates = $this->app->getJSONData("male-candidates");
-      $femaleCandidates = $this->app->getJSONData("female-candidates");
-      $count = count($maleCandidates) + count($femaleCandidates);
- 		}elseif($type == "male"){
-      $maleCandidates = $this->app->getJSONData("male-candidates");
-      $count = count($maleCandidates);
- 		}elseif($type == "female"){
-      $femaleCandidates = $this->app->getJSONData("female-candidates");
-      $count = count($femaleCandidates);
- 		}
-
- 		if($type == ""){
- 			return $count != $this->config['total-candidates'] ? false:true;
- 		}else{
- 			return $count != $this->config["{$type}_candidates"] ? false:true;
- 		}
+ 		return !empty($this->candidates);
  	}
  	
- 	/* Make changes to the live election page */
+ 	/**
+   * Make changes to the live election page
+   */
  	public function liveChange($type = ""){
  		$codes = array(
  			"reload" => "window.location = window.location;",
@@ -128,31 +130,30 @@ class Election {
   /**
    * Get Votes
    */
-  public function count($candidateNames){
+  public function count($candidates){
     $votes = $this->app->getJSONData("election_votes");
     $votes = is_array($votes) ? $votes : array();
     
-    $candidates = array_flip($candidateNames);
-    $candidates = array_fill_keys(array_keys($candidates), 0);
+    $results = array_fill_keys(array_column($candidates, "name"), 0);
     
     foreach($votes as $canID => $vote){
       foreach($vote as $canID){
-        if(isset($candidateNames[$canID])){
-          $candidates[$candidateNames[$canID]] = $candidates[$candidateNames[$canID]] + 1;
+        if(isset($candidates[$canID])){
+          $results[$candidates[$canID]["name"]] = $results[$candidates[$canID]["name"]] + 1;
         }
       }
     }
-    return $candidates;
+    return $results;
   }
  	
  	/**
    * Clear Data
    */
  	public function clear(){
- 		$this->removeData("male-candidates");
-    $this->removeData("female-candidates");
-    $this->removeData("student_passwords");
-    $this->removeData("election_votes");
+ 		$this->app->removeData("male-candidates");
+    $this->app->removeData("female-candidates");
+    $this->app->removeData("student_passwords");
+    $this->app->removeData("election_votes");
  	}
 }
 ?>

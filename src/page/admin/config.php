@@ -4,66 +4,52 @@ $this->addStyle("config.css");
 ?>
 <div class="contents">
   <h1>Configure Election</h1>
-  <p>To know about the configuration, <a href="https://github.com/subins2000/lobby-school-election#configuration" target="_blank">read this</a>.</p>
+  <p>To know how to do the configuration, <a href="https://github.com/subins2000/lobby-school-election#configuration" target="_blank" class="btn red">read this</a>.</p>
   <?php
   $type = Request::postParam("type");
   $strength = Request::postParam("strength");
   $votes = Request::postParam("votes");
   
-  if($type !== null && $strength !== null && $votes !== null && CSRF::check()){
-    $boys = Request::postParam("boys");
-    $girls = Request::postParam("girls");
-    
+  if($type !== null && $strength !== null && $votes !== null && CSRF::check()){    
     $classes = Request::postParam("classes");
     $divs = Request::postParam("divs");
     $ableToChoose = Request::postParam("votes");
     
-    if($type === "single" && !empty($classes)){
-      $newConfig = array(
-        "type" => "single",
-        "classes" => $classes,
-        "divisions" => $divs,
-        "max-strength" => $strength,
-        "male-candidates" => $boys,
-        "female-candidates" => $girls,
-        "total-candidates" => $boys + $girls,
-        "able-to-choose" => $ableToChoose
-      ) + $this->config;
-      
-      $this->saveJSONData("config", $newConfig);
-    }else if($type === "multiple" && $boys !== null && $girls !== null){
-      $newConfig = array(
-        "type" => "multiple",
+    if(($type === "single" || $type === "multiple") && !empty($classes)){
+      $submitConfig = array(
+        "type" => $type,
         "classes" => $classes,
         "divisions" => $divs,
         "max-strength" => $strength,
         "able-to-choose" => $ableToChoose
-      ) + $this->config;
+      );
+      $newConfig = $submitConfig + $this->config;
+      $newConfig = array_replace($newConfig, $submitConfig);
       
       $this->saveJSONData("config", $newConfig);
     }
-    sss("Saved", "The configuration has been saved.");
+    echo sss("Saved", "The configuration has been saved.");
     $this->config = $newConfig;
   }
   ?>
   <form action="<?php echo Lobby::u();?>" method="POST">
     <label>
-      <span>Election Type</span>
+      <span><a href="https://github.com/subins2000/lobby-school-election#type" target="_blank">Election Type</a></span>
       <select name="type">
-        <option value="single">Single</option>
+        <option value="single">Normal Election</option>
         <option value="multiple" <?php if($this->config["type"] === "multiple"){echo "selected='selected'";}?>>Boys & Girls</option>
       </select>
-    </label><cl/>
-    <label class="type-multiple-option">
-      <span>Number of Boys</span>
-      <input type="number" name="boys" value="<?php echo $this->config["female-candidates"];?>" />
     </label>
-    <label class="type-multiple-option">
-      <span>Number of Girls</span>
-      <input type="number" name="girls" value="<?php echo $this->config["male-candidates"];?>" />
+    <label>
+      <span><a href="https://github.com/subins2000/lobby-school-election#able-to-choose" target="_blank">Number of Votes</a></span>
+      <input type="number" name="votes" placeholder="How may votes can the student make ?"  value="<?php echo $this->config["able-to-choose"];?>" />
+    </label>
+    <label>
+      <span><a href="https://github.com/subins2000/lobby-school-election#max-strength" target="_blank">Maximum Strength</a></span>
+      <input type="number" name="strength" value="<?php echo $this->config["max-strength"];?>" />
     </label>
     <div id="classes" class="row">
-      <span class="col s12">Classes <a id="add"></a></span>
+      <span class="col s12"><a href="https://github.com/subins2000/lobby-school-election#classes" target="_blank">Classes</a><a id="add"></a></span>
       <?php
       foreach($this->config["classes"] as $class){
       ?>
@@ -76,7 +62,7 @@ $this->addStyle("config.css");
       ?>
     </div>
     <div id="divisions" class="row">
-      <span class="col s12">Divisions <a id="add"></a></span>
+      <span class="col s12"><a href="https://github.com/subins2000/lobby-school-election#divisions" target="_blank">Divisions</a><a id="add"></a></span>
       <?php
       foreach($this->config["divisions"] as $div){
       ?>
@@ -88,14 +74,6 @@ $this->addStyle("config.css");
       }
       ?>
     </div>
-    <label>
-      <span>Maximum Strength</span>
-      <input type="number" name="strength" value="<?php echo $this->config["max-strength"];?>" />
-    </label>
-    <label>
-      <span>Number of Votes</span>
-      <input type="number" name="votes" placeholder="How may votes can the student make ?"  value="<?php echo $this->config["able-to-choose"];?>" />
-    </label>
     <?php echo CSRF::getInput();?>
     <button class="btn green">Save</button>
   </form>

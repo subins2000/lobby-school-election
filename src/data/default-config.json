@@ -7,8 +7,5 @@
   "divisions" : [
     "A", "B", "C", "D"
   ],
-  "max-strength" : "70",
-  "male-candidates" : "1",
-  "female-candidates" : "1",
-  "total-candidates" : "8"
+  "max-strength" : "70"
 }

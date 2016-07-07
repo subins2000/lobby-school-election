@@ -25,7 +25,7 @@
     </label>
     <label>
       <span>Class Strength</span>
-      <input name="roll" type="number" placeholder="Last Roll Number" autocomplete="off" />
+      <input name="roll" type="number" placeholder="Last Roll Number" autocomplete="off" value="<?php echo $this->config["max-strength"];?>" />
     </label>
     <button style="margin-top: 15px;" class="btn red">Find</button>
 	</form>

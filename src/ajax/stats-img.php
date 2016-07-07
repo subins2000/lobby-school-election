@@ -10,8 +10,8 @@ $cfg['height'] = 300;
 $cfg['value-font-size'] = 4;
 $cfg['key-font-size'] = 6;
 
-$candidateNames = $this->getJSONData("female-candidates") + $this->getJSONData("male-candidates");
-$votes = $this->EC->count($candidateNames);
+$candidates = $this->EC->getCandidates();
+$votes = $this->EC->count($candidates);
 
 foreach($votes as $name => $votes){
   $data[$name] = $votes;

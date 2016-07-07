@@ -1,48 +1,58 @@
-/* A global variable */
-window.voterID = "";
+lobby.app = $.extend(lobby.app, {
 
-/* The HOST URL */
-window.hostURL   = window.location.protocol + "//" + window.location.host + window.location.pathname;
+  voterID: null,
+  
+  /**
+   * Prevent boxes being checked does not overflow the limit
+   */
+  checkboxesCheck: function(parent){
+    parent.find("input[type=checkbox]").on('change', function(evt) {
+      if(parent.find(':checked').length > lobby.app.config["able-to-choose"]){
+        parent.find(':checked').not(this).last().prop("checked", false);
+      }
+    });
+  }
+  
+});
 
-$(document).ready(function(){
+lobby.load(function(){
   /**
   This was for bethany exclusively by Subin 2014
   lobby.app.ajax("/username.php", function(u){
      if(u != "error"){
-       window.voterID = u;
-       $(".contents #voterForm").fadeOut(500, function(){
-        $(".contents #voteForm").fadeIn(500);
+       lobby.app.voterID = u;
+       $("#workspace #voterForm").fadeOut(500, function(){
+        $("#workspace #voteForm").fadeIn(500);
       });
-      $(".contents #voteForm #username").text(u);
+      $("#workspace #voteForm #username").text(u);
      }else{
        alert("Some error occured, please contact administrator");
      }
    });
   */
-   
-  var candidateLimit = lobby.app.config["able-to-choose"] ;
   
-  $('.boys input[type=checkbox]').on('change', function(evt) {
-    if($(".boys").find(':checked').length > candidateLimit) {
-      this.checked = false;
-    }
-  });
-  $('.girls input[type=checkbox]').on('change', function(evt) {
-    if($(".girls").find(':checked').length > candidateLimit) {
-      this.checked = false;
-    }
-  });
+  var candidateLimit = lobby.app.config["able-to-choose"];
   
-  $(".contents #voteForm").on('submit', function(e){
+  if(lobby.app.config["type"] === "single"){
+    lobby.app.checkboxesCheck($("#workspace #candidates"));
+  }else{
+    lobby.app.checkboxesCheck($("#workspace #candidates #boys"));
+    lobby.app.checkboxesCheck($("#workspace #candidates #girls"));
+  }
+  
+  $("#workspace #voteForm").on('submit', function(e){
     e.preventDefault();
-    if($(".girls :checked").length < candidateLimit){
+    
+    if(lobby.app.config["type"] === "multiple" && $("#girls :checked").length < candidateLimit){
       alert("Please Select "+ candidateLimit +" Girl(s)");
-    }else if($(".boys :checked").length < candidateLimit){
+    }else if(lobby.app.config["type"] === "multiple" && $("#boys :checked").length < candidateLimit){
       alert("Please Select "+ candidateLimit +" Boy(s)");
+    }else if(lobby.app.config["type"] === "single" && $("#voteForm :checked").length < candidateLimit){
+      alert("Please Select "+ candidateLimit +" candidate(s)");
     }else{
       requestData = {
         "vote" : "true",
-        "voterID" : window.voterID,
+        "voterID" : lobby.app.voterID,
         "candidates" : []
       };
       $(this).find(":checked").each(function(){
@@ -50,44 +60,46 @@ $(document).ready(function(){
       });
 
       lobby.app.ajax("vote.php", requestData, function(r){
-        if(r == "error"){
+        if(r === "error"){
           alert("Some Error occured. Please contact the supervisor.");
-        }else if(r == "voted"){
+        }else if(r === "voted"){
           alert("You have already voted. Please Don't try to trick me :-)");
         }else{
-          $(".contents #voteForm").fadeOut(500, function(){
-            $(".contents .thankyou").fadeIn(500);
+          $("#workspace #voteForm").fadeOut(500, function(){
+            $("#workspace .thankyou").fadeIn(500);
           });
         }
-      }).error(function(){
-        alert("Some error occured. Contact the administrator");
       });
     }
   });
   
-  $(".contents #voterForm").on("submit", function(e){
+  $("#workspace #voterForm").on("submit", function(e){
     e.preventDefault();
-    var cl   = $(this).find("[name=class]").val();
-    var dv   = $(this).find("[name=division]").val();
+    
+    /**
+     * 'class' is a reserved keyword in JS, so using 'clas'
+     */
+    var clas = $(this).find("[name=class]").val();
+    var div   = $(this).find("[name=division]").val();
     var roll  = $(this).find("[name=roll]").val();
-    var password = $(this).find("[name=password]").val();
+    var pass  = $(this).find("[name=password]").val();
     
     if(/^[a-z]+$/i.test(roll)){
       alert("Alphabetic characters are not valid for a Roll Number");
     }else if(roll.length == 0){
       alert("Please type in a roll number");
-    }else if(password.length != 3){
+    }else if(pass.length != 3){
       alert("Password Should Be a 3 Digit Number");
     }else{
-      window.voterID  = cl + dv + roll;
-      lobby.app.ajax("check.php", {"id" : voterID, "roll" : roll, "password" : password}, function(r){
+      lobby.app.voterID = clas + div + roll;
+      lobby.app.ajax("check.php", {"id" : lobby.app.voterID, "roll" : roll, "password" : pass}, function(r){
         /**
          * Show the vote form
          */
-        if(r == "true"){
-          $(".contents #voteForm #username").text(voterID);
-          $(".contents #voterForm").fadeOut(500, function(){
-            $(".contents #voteForm").fadeIn(500);
+        if(r === "true"){
+          $("#workspace #voteForm #username").text(lobby.app.voterID);
+          $("#workspace #voterForm").fadeOut(500, function(){
+            $("#workspace #voteForm").fadeIn(500);
           });
         }else if(r == "voted"){
           alert("You have already voted. Please Don't try to trick me :-)");
@@ -102,12 +114,12 @@ $(document).ready(function(){
     lobby.app.ajax("changes.php", {}, function(script){
       eval(script);
     });
-  }, 5000);
+  }, 8000);
   
   setInterval(function(){
-    if($(".contents #voteForm").is(":visible")){
-      $(".contents #voteForm #username").animate({"opacity" : 0}, 500, function(){
-        $(".contents #voteForm #username").animate({"opacity" : 1}, 500);
+    if($("#workspace #voteForm").is(":visible")){
+      $("#workspace #voteForm #username").animate({"opacity" : 0}, 500, function(){
+        $("#workspace #voteForm #username").animate({"opacity" : 1}, 500);
       });
     }
   }, 1000);

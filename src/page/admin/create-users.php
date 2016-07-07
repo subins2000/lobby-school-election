@@ -4,7 +4,7 @@ $this->setTitle("Generate User Passwords");
 <div class="contents">
   <h2>Generate Passwords</h2>
   <p>Use the following form to generate passwords for students to login.</p>
-  <p>It is better to change passwords at some intervals (30 minutes).</p>
+  <p>It is better to change passwords at intervals (30 minutes).</p>
   <form action="<?php echo \Lobby::u();?>" method="POST" clear style="margin-left: 30px;">
     <label>
       <span>Number of Students :</span><cl/>

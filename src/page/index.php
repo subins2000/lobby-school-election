@@ -36,7 +36,7 @@ $_SESSION['election-validated'] = "false";
     </div>
   </form>
   <form action="vote.php" id="voteForm">
-    <div class="candidates">
+    <div id="candidates">
        <?php $this->EC->showCandidates();?>
     </div>
     <button class="btn vote" name="vote" value="vote">Cast Your Vote</button>
