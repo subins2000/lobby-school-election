@@ -14,7 +14,7 @@ $_SESSION['election-validated'] = "false";
     <select name="class">
       <?php
       foreach($this->config['classes'] as $class){
-        echo "<option name='$class'>$class</option>";
+        echo "<option value='$class'>$class</option>";
       }
       ?>
     </select>
@@ -23,7 +23,7 @@ $_SESSION['election-validated'] = "false";
       <?php
       $divs = $this->config['divisions'];
       foreach($divs as $div){
-        echo "<option name='$div'>$div</option>";
+        echo "<option value='$div'>$div</option>";
       }
       ?>
     </select>
