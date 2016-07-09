@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="bootstrap.php" colors="true">
+  <testsuites>
+    <testsuite name="School Election">
+      <directory suffix=".php">./tests/</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <const name="LOBBY_URL" value="http://lobby.sim" />
+    <const name="LOBBY_DIR" value="/../../../../"></const>
+  </php>
+</phpunit>
