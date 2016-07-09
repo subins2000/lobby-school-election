@@ -45,6 +45,10 @@ The maximum number of children in classes i.e. the number of students in the cla
 
 Example: If 5A has `60` students and 5B has `63` students, then the value should be `63`
 
+### password
+
+Whether voter should enter password to vote. `1` for TRUE and `0` for FALSE.
+
 ## Bethany
 
 Don't mind this if you are not from Bethany
