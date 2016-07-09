@@ -1,7 +1,7 @@
 <?php
 if(isset($_POST['vote']) && isset($_POST['candidates']) && isset($_POST['voterID'])){
 	
-  if($_SESSION['election-validated'] == "true"){
+  if($_SESSION['election-validated'] === "true"){
     $can = $_POST['candidates'];
 		$voterID = $_POST['voterID']; // Gets as "10d29". We then uppercase it
 

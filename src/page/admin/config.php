@@ -21,7 +21,8 @@ $this->addStyle("config.css");
         "classes" => $classes,
         "divisions" => $divs,
         "max-strength" => $strength,
-        "able-to-choose" => $ableToChoose
+        "able-to-choose" => $ableToChoose,
+        "password" => isset($_POST["password"]) ? "1" : "0"
       );
       $newConfig = $submitConfig + $this->config;
       $newConfig = array_replace($newConfig, $submitConfig);
@@ -48,7 +49,14 @@ $this->addStyle("config.css");
       <span><a href="https://github.com/subins2000/lobby-school-election#max-strength" target="_blank">Maximum Strength</a></span>
       <input type="number" name="strength" value="<?php echo $this->config["max-strength"];?>" />
     </label>
-    <div id="classes" class="row">
+    <div>
+      <span><a href="https://github.com/subins2000/lobby-school-election#password" target="_blank">Password For Voters</a></span><cl/>
+      <label>
+        <input type="checkbox" name="password" <?php if($this->config["password"] === "1"){echo "checked='checked'";}?> />
+        <span>Password</span>
+      </label>
+    </div>
+    <div id="classes" class="row" style="margin-top: 10px;">
       <span class="col s12"><a href="https://github.com/subins2000/lobby-school-election#classes" target="_blank">Classes</a><a id="add"></a></span>
       <?php
       foreach($this->config["classes"] as $class){

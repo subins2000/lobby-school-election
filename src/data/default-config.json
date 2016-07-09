@@ -7,5 +7,6 @@
   "divisions" : [
     "A", "B", "C", "D"
   ],
-  "max-strength" : "70"
+  "max-strength" : "70",
+  "password" : "1"
 }

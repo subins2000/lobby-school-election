@@ -29,8 +29,14 @@ $_SESSION['election-validated'] = "false";
     </select>
     <h2>Roll Number</h2>
     <input name="roll" type="number" placeholder="Roll Number" autocomplete="off" />
+    <?php
+    if($this->config["password"] === "1"){
+    ?>
       <h2>Password</h2>
-    <input name="password" type="password" placeholder="Password" autocomplete="off" />
+      <input name="password" type="password" placeholder="Password" autocomplete="off" />
+    <?php
+    }
+    ?>
     <div style="margin-top: 20px;">
       <button name="submit" class="btn green">Login To Vote</button>
     </div>

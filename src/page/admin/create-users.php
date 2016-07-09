@@ -29,12 +29,12 @@ $this->setTitle("Generate User Passwords");
         echo "<tr><td>$i</td><td>$password</td></tr>";
       }
     echo "</tbody></table>";
-    $this->saveData("student_passwords", serialize($data));
+    $this->removeData("student_passwords");
+    $this->saveJSONData("student_passwords", $data);
   }else{
-    $passwords = $this->getData("student_passwords");
-    if($passwords != null){
-      $passwords = unserialize($passwords);
-      echo "<h2>Current Passwords</h2>";
+    $passwords = $this->getJSONData("student_passwords");
+    if($passwords !== null){
+      echo "<h2>Passwords</h2>";
       echo "<table><tbody>";
         echo "<thead><tr><td>Roll Number</td><td>Password</td></tr></thead>";
         foreach($passwords as $i => $password){

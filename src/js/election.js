@@ -11,6 +11,13 @@ lobby.app = $.extend(lobby.app, {
         parent.find(':checked').not(this).last().prop("checked", false);
       }
     });
+  },
+  
+  dialog: function(msg){
+    $("<div><h3>"+ msg +"</h3></div>").dialog({
+      closeOnEscape: true,
+      minWidth: 500
+    });
   }
   
 });
@@ -26,7 +33,7 @@ lobby.load(function(){
       });
       $("#workspace #voteForm #username").text(u);
      }else{
-       alert("Some error occured, please contact administrator");
+       lobby.app.dialog("Some error occured, please contact administrator");
      }
    });
   */
@@ -44,11 +51,11 @@ lobby.load(function(){
     e.preventDefault();
     
     if(lobby.app.config["type"] === "multiple" && $("#girls :checked").length < candidateLimit){
-      alert("Please Select "+ candidateLimit +" Girl(s)");
+      lobby.app.dialog("Please Select "+ candidateLimit +" Girl(s)");
     }else if(lobby.app.config["type"] === "multiple" && $("#boys :checked").length < candidateLimit){
-      alert("Please Select "+ candidateLimit +" Boy(s)");
+      lobby.app.dialog("Please Select "+ candidateLimit +" Boy(s)");
     }else if(lobby.app.config["type"] === "single" && $("#voteForm :checked").length < candidateLimit){
-      alert("Please Select "+ candidateLimit +" candidate(s)");
+      lobby.app.dialog("Please Select "+ candidateLimit +" candidate(s)");
     }else{
       requestData = {
         "vote" : "true",
@@ -61,9 +68,9 @@ lobby.load(function(){
 
       lobby.app.ajax("vote.php", requestData, function(r){
         if(r === "error"){
-          alert("Some Error occured. Please contact the supervisor.");
+          lobby.app.dialog("Some Error occured. Please contact the supervisor.");
         }else if(r === "voted"){
-          alert("You have already voted. Please Don't try to trick me :-)");
+          lobby.app.dialog("You have already voted.<br/>Please don't try to trick me :-)");
         }else{
           $("#workspace #voteForm").fadeOut(500, function(){
             $("#workspace .thankyou").fadeIn(500);
@@ -80,19 +87,19 @@ lobby.load(function(){
      * 'class' is a reserved keyword in JS, so using 'clas'
      */
     var clas = $(this).find("[name=class]").val();
-    var div   = $(this).find("[name=division]").val();
-    var roll  = $(this).find("[name=roll]").val();
-    var pass  = $(this).find("[name=password]").val();
+    var div  = $(this).find("[name=division]").val();
+    var roll = $(this).find("[name=roll]").val();
+    var pass = lobby.app.config["password"] === "1" ? $(this).find("[name=password]").val() : 0;
     
     if(/^[a-z]+$/i.test(roll)){
-      alert("Alphabetic characters are not valid for a Roll Number");
+      lobby.app.dialog("Alphabetic characters are not valid for a Roll Number");
     }else if(roll.length == 0){
-      alert("Please type in a roll number");
-    }else if(pass.length != 3){
-      alert("Password Should Be a 3 Digit Number");
+      lobby.app.dialog("Please type in a roll number");
+    }else if(lobby.app.config["password"] === "1" && pass.length != 3){
+      lobby.app.dialog("Password Should Be a 3 Digit Number");
     }else{
       lobby.app.voterID = clas + div + roll;
-      lobby.app.ajax("check.php", {"id" : lobby.app.voterID, "roll" : roll, "password" : pass}, function(r){
+      lobby.app.ajax("login.php", {"id" : lobby.app.voterID, "roll" : roll, "password" : pass}, function(r){
         /**
          * Show the vote form
          */
@@ -102,9 +109,9 @@ lobby.load(function(){
             $("#workspace #voteForm").fadeIn(500);
           });
         }else if(r == "voted"){
-          alert("You have already voted. Please Don't try to trick me :-)");
+          lobby.app.dialog("You have already voted.<br/>Please don't try to trick me :-)");
         }else{
-          alert("Password Wrong !");
+          lobby.app.dialog("Password Wrong !");
         }
       });
     }
