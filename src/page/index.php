@@ -8,56 +8,58 @@ lobby.load(function(){
   lobby.app.config = <?php echo json_encode($this->config);?>;
 });
 </script>
-<div class="contents">
-  <form action="info.php" id="voterForm">
-    <h2>Class</h2>
-    <select name="class">
+<div class="valign-wrapper">
+  <div id="content" class="valign">
+    <form action="info.php" id="voterForm">
+      <h2>Class</h2>
+      <select name="class">
+        <?php
+        foreach($this->config['classes'] as $class){
+          echo "<option value='$class' ". ($this->config["default-class"] === $class ? "selected='selected'" : "") .">$class</option>";
+        }
+        ?>
+      </select>
+      <h2>Division</h2>
+      <select name="division">
+        <?php
+        $divs = $this->config['divisions'];
+        foreach($divs as $div){
+          echo "<option value='$div' ". ($this->config["default-division"] === $div ? "selected='selected'" : "") .">$div</option>";
+        }
+        ?>
+      </select>
+      <h2>Roll Number</h2>
+      <input name="roll" type="number" placeholder="Roll Number" autocomplete="off" />
       <?php
-      foreach($this->config['classes'] as $class){
-        echo "<option value='$class' ". ($this->config["default-class"] === $class ? "selected='selected'" : "") .">$class</option>";
+      if($this->config["password"] === "1"){
+      ?>
+        <h2>Password</h2>
+        <input name="password" type="password" placeholder="Password" autocomplete="off" />
+      <?php
       }
       ?>
-    </select>
-    <h2>Division</h2>
-    <select name="division">
-      <?php
-      $divs = $this->config['divisions'];
-      foreach($divs as $div){
-        echo "<option value='$div' ". ($this->config["default-division"] === $div ? "selected='selected'" : "") .">$div</option>";
-      }
-      ?>
-    </select>
-    <h2>Roll Number</h2>
-    <input name="roll" type="number" placeholder="Roll Number" autocomplete="off" />
-    <?php
-    if($this->config["password"] === "1"){
-    ?>
-      <h2>Password</h2>
-      <input name="password" type="password" placeholder="Password" autocomplete="off" />
-    <?php
-    }
-    ?>
-    <div style="margin-top: 20px;">
-      <button name="submit" class="btn green">Login To Vote</button>
+      <div style="margin-top: 20px;">
+        <button name="submit" class="btn green">Login To Vote</button>
+      </div>
+    </form>
+    <form action="vote.php" id="voteForm">
+      <div id="candidates">
+         <?php $this->EC->showCandidates();?>
+      </div>
+      <button class="btn vote" name="vote" value="vote">Cast Your Vote</button>
+      <?php /**<div id="username"></div>*/?>
+    </form>
+    <div class='thankyou'>
+      <h1>Thank You</h1>
+      <p>Your vote was entered successfully.</p>
     </div>
-  </form>
-  <form action="vote.php" id="voteForm">
-    <div id="candidates">
-       <?php $this->EC->showCandidates();?>
-    </div>
-    <button class="btn vote" name="vote" value="vote">Cast Your Vote</button>
-    <?php /**<div id="username"></div>*/?>
-  </form>
-  <div class='thankyou'>
-    <h1>Thank You</h1>
-    <p>Your vote was entered successfully.</p>
   </div>
+  <style>
+  body{  
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  </style>
 </div>
-<style>
-body{  
-  -webkit-user-select: none;
-  -moz-user-select: -moz-none;
-  -ms-user-select: none;
-  user-select: none;
-}
-</style>

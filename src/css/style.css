@@ -2,6 +2,9 @@
   background: -moz-linear-gradient(10% 100% 360deg, #377ad0, #52a8e8);
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#52a8e8), to(#377ad0));
 }
+#workspace .valign-wrapper{
+  height: 80%;
+}
 #workspace .quote{
 	color:white;
 	font-size:20px;
@@ -11,16 +14,15 @@
 	left:0px;
 	text-align:center;
 }
-#workspace .contents {
-	width: 46%;
-  height: 70%;
+#workspace #content{
   margin: auto;
-  position: absolute;
-  top: -120px; left: 0; bottom: 0; right: 0;
   box-shadow: 0 1px 10px 0 #b3b3b3;
-  padding:0px 15px;
+  padding: 20px 80px 40px 80px;
   background:white;
-  border-radius:10px;
+  border-radius: 10px;
+  max-height: 400px;
+  transition: all 4s;
+  -moz-transition: all 4s;
 }
 #workspace .content-full{
 	width: 46%;
@@ -74,11 +76,11 @@
 #workspace input[type=checkbox]{
  	outline:none !important;
 }
-#workspace .contents .thankyou, #workspace .contents #voteForm{
+#workspace .thankyou, #workspace #voteForm{
 	display: none;
 }
 @media screen and (max-width: 1024px){
-  #workspace .contents {
+  #workspace {
     width: 80%;
   }
 }

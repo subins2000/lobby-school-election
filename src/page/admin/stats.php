@@ -5,14 +5,16 @@
   $showResults = false;
   
   if($this->config["type"] === "class"){
+    $class = Request::getParam("class");
+    $div = Request::getParam("division");
   ?>
     <form action="<?php echo $this->adminURL;?>/stats" method="GET">
       <label>
         <span>Class</span>
         <select name="class">
           <?php
-          foreach($this->config['classes'] as $class){
-            echo "<option name='$class'>$class</option>";
+          foreach($this->config['classes'] as $arClass){
+            echo "<option value='$arClass' ". ($arClass === $class ? "selected='selected'" : "") .">$arClass</option>";
           }
           ?>
         </select>
@@ -22,8 +24,8 @@
         <select name="division">
           <?php
           $divs = $this->config['divisions'];
-          foreach($divs as $div){
-            echo "<option name='$div'>$div</option>";
+          foreach($divs as $arDiv){
+            echo "<option value='$arDiv' ". ($arDiv === $div ? "selected='selected'" : "") .">$arDiv</option>";
           }
           ?>
         </select>
@@ -31,9 +33,6 @@
       <button style="margin-top: 15px;" class="btn red">Get Results</button>
     </form>
   <?php
-    $class = Request::getParam("class");
-    $div = Request::getParam("division");
-    
     if($class !== null && $div !== null)
       $showResults = true;
   }else{
@@ -121,22 +120,6 @@
       </div>
     <?php
     }
-  }
-  $students = $this->getJSONData("election_votes");
-  if(is_array($students)){
-  ?>
-    <h2>Voters</h2>
-    <p>The last 10 persons that have voted <b title="Voters irrespective of class & division">generally</b> :</p>
-    <ol>
-  <?php
-    $students = array_keys($students);
-    $students = array_chunk(array_reverse($students), 10);
-    $students = $students[0];
-    
-    foreach($students as $student){
-      echo "<li>$student</li>";
-    }
-    echo "</ol>";
   }
   ?>
 </div>

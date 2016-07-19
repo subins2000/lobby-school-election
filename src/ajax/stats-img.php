@@ -8,6 +8,9 @@ if($class !== null && $div !== null)
 else
   $candidates = $this->EC->getCandidates();
 
+if(empty($candidates))
+  die("");
+
 $votes = $this->EC->count($candidates);
 
 $data = array();

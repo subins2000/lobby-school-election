@@ -34,8 +34,7 @@
         </div>
         <div style="margin-top:10px;">
           <?php
-          if($this->config["voted-list"] === "1")
-            echo \Lobby::l("/admin/app/school-election/voted", "Voted List", "class='btn red' title='A list of candidates voted by each voters'");
+          echo \Lobby::l("/admin/app/school-election/voted", "Voted List", "class='btn red'");
           ?>
         </div>
         <div style="margin-top:10px;">
