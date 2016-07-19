@@ -14,7 +14,7 @@ class Election {
     return true;
  	}
  	
- 	public function showCandidates(){
+ 	public function showCandidates($class = null, $div = null){
     if($this->config["type"] === "multiple"){
       /**
        * Boys Section
@@ -31,6 +31,10 @@ class Election {
         echo "<h2>Girls</h2>";
         echo $this->makeCandidatesHTML($this->getCandidates("female"));
       echo "</div>";
+    }else if($this->config["type"] === "class"){
+      if($class === null || $div === null)
+        return "";
+      return $this->makeCandidatesHTML($this->getCandidates($class, $div));
     }else{
       echo $this->makeCandidatesHTML($this->getCandidates());
     }
@@ -53,9 +57,24 @@ class Election {
     }
  	}
   
-  public function getCandidates($gender = null){
+  /**
+   * @param string $gender Acts as both gender and class
+   * @param string $div Class Division
+   */
+  public function getCandidates($gender = null, $div = null){
     if($gender === null)
       return $this->candidates;
+    
+    if($this->config["type"] === "class" && $gender !== null && $div !== null){
+      $candidates = array();
+      
+      foreach($this->candidates as $id => $candidate){
+        if($candidate["class"] === $gender && $candidate["division"] === $div){
+          $candidates[$id] = $candidate;
+        }
+      }
+      return $candidates;
+    }
     
     if($this->isElection() && empty($this->maleCandidates) && empty($this->femaleCandidates)){
       foreach($this->candidates as $id => $candidate){
@@ -150,8 +169,7 @@ class Election {
    * Clear Data
    */
  	public function clear(){
- 		$this->app->removeData("male-candidates");
-    $this->app->removeData("female-candidates");
+    $this->app->removeData("candidates");
     $this->app->removeData("student_passwords");
     $this->app->removeData("election_votes");
  	}

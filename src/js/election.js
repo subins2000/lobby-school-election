@@ -6,7 +6,7 @@ lobby.app = $.extend(lobby.app, {
    * Prevent boxes being checked does not overflow the limit
    */
   checkboxesCheck: function(parent){
-    parent.find("input[type=checkbox]").on('change', function(evt) {
+    parent.find("input[type=checkbox]").live('change', function(evt) {
       if(parent.find(':checked').length > lobby.app.config["able-to-choose"]){
         parent.find(':checked').not(this).last().prop("checked", false);
       }
@@ -40,11 +40,11 @@ lobby.load(function(){
   
   var candidateLimit = lobby.app.config["able-to-choose"];
   
-  if(lobby.app.config["type"] === "single"){
-    lobby.app.checkboxesCheck($("#workspace #candidates"));
-  }else{
+  if(lobby.app.config["type"] === "multiple"){
     lobby.app.checkboxesCheck($("#workspace #candidates #boys"));
     lobby.app.checkboxesCheck($("#workspace #candidates #girls"));
+  }else{
+    lobby.app.checkboxesCheck($("#workspace #candidates"));
   }
   
   $("#workspace #voteForm").on('submit', function(e){
@@ -54,7 +54,7 @@ lobby.load(function(){
       lobby.app.dialog("Please Select "+ candidateLimit +" Girl(s)");
     }else if(lobby.app.config["type"] === "multiple" && $("#boys :checked").length < candidateLimit){
       lobby.app.dialog("Please Select "+ candidateLimit +" Boy(s)");
-    }else if(lobby.app.config["type"] === "single" && $("#voteForm :checked").length < candidateLimit){
+    }else if($("#voteForm :checked").length < candidateLimit){
       lobby.app.dialog("Please Select "+ candidateLimit +" candidate(s)");
     }else{
       requestData = {
@@ -108,6 +108,11 @@ lobby.load(function(){
           $("#workspace #voterForm").fadeOut(500, function(){
             $("#workspace #voteForm").fadeIn(500);
           });
+          if(lobby.app.config["type"] === "class"){
+            lobby.app.ajax("candidates.php", {"class": clas, "division": div}, function(response){
+              $("#workspace #voteForm #candidates").html(response);
+            });
+          }
         }else if(r == "voted"){
           lobby.app.dialog("You have already voted.<br/>Please don't try to trick me :-)");
         }else{
@@ -130,4 +135,9 @@ lobby.load(function(){
       });
     }
   }, 1000);
+  
+  /**
+   * Focus on Roll number field
+   */
+  $("#workspace #voterForm input[name=roll]").focus();
 });

@@ -8,5 +8,9 @@
     "A", "B", "C", "D"
   ],
   "max-strength" : "70",
-  "password" : "1"
+  "password" : "1",
+  "voted-list" : "0",
+  "remember-options" : "0",
+  "default-class" : "5",
+  "default-division" : "A"
 }

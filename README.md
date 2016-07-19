@@ -49,6 +49,14 @@ Example: If 5A has `60` students and 5B has `63` students, then the value should
 
 Whether voter should enter password to vote. `1` for TRUE and `0` for FALSE.
 
+### default-class
+
+When a voter visits the election page, which class should be seen selected ?
+
+### default-division
+
+When a voter visits the election page, which division should be seen selected ?
+
 ## Bethany
 
 Don't mind this if you are not from Bethany

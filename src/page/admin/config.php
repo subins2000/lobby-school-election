@@ -4,7 +4,7 @@ $this->addStyle("config.css");
 ?>
 <div class="contents">
   <h1>Configure Election</h1>
-  <p>To know how to do the configuration, <a href="https://github.com/subins2000/lobby-school-election#configuration" target="_blank" class="btn red">read this</a>.</p>
+  <p>To know how to do the configuration, <a href="https://github.com/subins2000/lobby-school-election#configuration" target="_blank">read this</a>.</p>
   <?php
   $type = Request::postParam("type");
   $strength = Request::postParam("strength");
@@ -15,22 +15,29 @@ $this->addStyle("config.css");
     $divs = Request::postParam("divs");
     $ableToChoose = Request::postParam("votes");
     
-    if(($type === "single" || $type === "multiple") && !empty($classes)){
+    $defaultClass = Request::postParam("default-class");
+    $defaultDiv = Request::postParam("default-division");
+    
+    if(($type === "single" || $type === "multiple" || $type === "class") && !empty($classes)){
       $submitConfig = array(
         "type" => $type,
         "classes" => $classes,
         "divisions" => $divs,
         "max-strength" => $strength,
         "able-to-choose" => $ableToChoose,
-        "password" => isset($_POST["password"]) ? "1" : "0"
+        "password" => isset($_POST["password"]) ? "1" : "0",
+        "default-class" => $defaultClass,
+        "default-division" => $defaultDiv
       );
       $newConfig = $submitConfig + $this->config;
       $newConfig = array_replace($newConfig, $submitConfig);
       
+      $this->removeData("config");
       $this->saveJSONData("config", $newConfig);
+      
+      echo sss("Saved", "The configuration has been saved.");
+      $this->config = $newConfig;
     }
-    echo sss("Saved", "The configuration has been saved.");
-    $this->config = $newConfig;
   }
   ?>
   <form action="<?php echo Lobby::u();?>" method="POST">
@@ -38,6 +45,7 @@ $this->addStyle("config.css");
       <span><a href="https://github.com/subins2000/lobby-school-election#type" target="_blank">Election Type</a></span>
       <select name="type">
         <option value="single">Normal Election</option>
+        <option value="class" <?php if($this->config["type"] === "class"){echo "selected='selected'";}?>>Class Wise</option>
         <option value="multiple" <?php if($this->config["type"] === "multiple"){echo "selected='selected'";}?>>Boys & Girls</option>
       </select>
     </label>
@@ -82,7 +90,37 @@ $this->addStyle("config.css");
       }
       ?>
     </div>
+    <?php
+    if(!empty($this->config["classes"])){
+    ?>
+      <label>
+        <span><a href="https://github.com/subins2000/lobby-school-election#default-class" target="_blank">Default Class</a></span>
+        <select name="default-class">
+          <?php
+          foreach($this->config["classes"] as $class){
+            echo "<option value='$class' ". ($this->config["default-class"] === $class ? "selected='selected'" : "") .">$class</option>";
+          }
+          ?>
+        </select>
+      </label>
+    <?php
+    }
+    if(!empty($this->config["divisions"])){
+    ?>
+      <label>
+        <span><a href="https://github.com/subins2000/lobby-school-election#default-division" target="_blank">Default Division</a></span>
+        <select name="default-division">
+          <?php
+          foreach($this->config["divisions"] as $div){
+            echo "<option value='$div'". ($this->config["default-division"] === $div ? "selected='selected'" : "") .">$div</option>";
+          }
+          ?>
+        </select>
+      </label>
+    <?php
+    }
+    ?>
     <?php echo CSRF::getInput();?>
-    <button class="btn green">Save</button>
+    <button class="btn green" clear="1">Save Settings</button>
   </form>
 </div>

@@ -4,9 +4,9 @@ $this->addScript("election.js");
 $_SESSION['election-validated'] = "false";
 ?>
 <script>
-(function(){
+lobby.load(function(){
   lobby.app.config = <?php echo json_encode($this->config);?>;
-})(lobby);
+});
 </script>
 <div class="contents">
   <form action="info.php" id="voterForm">
@@ -14,7 +14,7 @@ $_SESSION['election-validated'] = "false";
     <select name="class">
       <?php
       foreach($this->config['classes'] as $class){
-        echo "<option value='$class'>$class</option>";
+        echo "<option value='$class' ". ($this->config["default-class"] === $class ? "selected='selected'" : "") .">$class</option>";
       }
       ?>
     </select>
@@ -23,7 +23,7 @@ $_SESSION['election-validated'] = "false";
       <?php
       $divs = $this->config['divisions'];
       foreach($divs as $div){
-        echo "<option value='$div'>$div</option>";
+        echo "<option value='$div' ". ($this->config["default-division"] === $div ? "selected='selected'" : "") .">$div</option>";
       }
       ?>
     </select>
@@ -46,21 +46,12 @@ $_SESSION['election-validated'] = "false";
        <?php $this->EC->showCandidates();?>
     </div>
     <button class="btn vote" name="vote" value="vote">Cast Your Vote</button>
-    <div id="username"></div>
+    <?php /**<div id="username"></div>*/?>
   </form>
   <div class='thankyou'>
     <h1>Thank You</h1>
     <p>Your vote was entered successfully.</p>
   </div>
-</div>
-<div class="quote">
-  Democracy is tolerance. It is the tolerance not only towards
-  <div style="margin-left:90px;">
-    those who agree with us, but also towards those who disagree.
-  </div>
-  <p style="text-align:right;display:inline-block;">
-    - Jawarhalal Nehru
-  </p>
 </div>
 <style>
 body{  

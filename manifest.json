@@ -5,6 +5,9 @@
   "category" : "accessories",
   "sub_catrgory" : "tools",
   "version" : "0.1",
+  "require" : {
+    "app/indi" : ">=0.1"
+  },
   "logo" : "true",
   "author" : "Subin Siby",
   "author_page" : "http://subinsb.com",

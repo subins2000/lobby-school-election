@@ -1,21 +1,25 @@
 <?php
 include $this->dir . "/src/inc/graph.php";
 
-$data = array();
+$class = Request::postParam("class");
+$div = Request::postParam("division");
+if($class !== null && $div !== null)
+  $candidates = $this->EC->getCandidates($class, $div);
+else
+  $candidates = $this->EC->getCandidates();
 
-// Set config directives
+$votes = $this->EC->count($candidates);
+
+$data = array();
+foreach($votes as $name => $votes){
+  $data[$name] = $votes;
+}
+
 $cfg['title'] = 'Election Results';
 $cfg['width'] = 600;
 $cfg['height'] = 300;
 $cfg['value-font-size'] = 4;
 $cfg['key-font-size'] = 6;
-
-$candidates = $this->EC->getCandidates();
-$votes = $this->EC->count($candidates);
-
-foreach($votes as $name => $votes){
-  $data[$name] = $votes;
-}
 
 $graph = new phpMyGraph();
 

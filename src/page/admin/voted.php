@@ -29,7 +29,7 @@
   <?php
   $class = Request::getParam("class");
   $div = Request::getParam("division");
-  if($class !== null && $div !== null && CSRF::check()){
+  if($this->config["voted-list"] === "1" && $class !== null && $div !== null && CSRF::check()){
     $votes = $this->getJSONData("election_votes");
     echo "<h2>List</h2><p>This list shows only the voted voters. You can get the list of <a href='". $this->adminURL ."/didnt-vote'>who didn't vote here</a>.</p><ul>";
     
