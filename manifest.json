@@ -6,6 +6,7 @@
   "sub_catrgory" : "tools",
   "version" : "0.1.1",
   "require" : {
+    "lobby" : ">=0.9",
     "app/indi" : ">=0.1"
   },
   "logo" : "true",
