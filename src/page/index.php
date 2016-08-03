@@ -53,6 +53,7 @@ lobby.load(function(){
       <h1>Thank You</h1>
       <p>Your vote was entered successfully.</p>
     </div>
+    <audio src="<?php echo $this->srcURL;?>/src/audio/beep.mp3" controls="false" id="votedBeep"></audio>
   </div>
   <style>
   body{  

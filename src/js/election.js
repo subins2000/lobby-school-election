@@ -66,14 +66,19 @@ lobby.load(function(){
         requestData["candidates"].push($(this).val());
       });
 
-      lobby.app.ajax("vote.php", requestData, function(r){
+      lobby.app.ajax("vote", requestData, function(r){
         if(r === "error"){
           lobby.app.dialog("Some Error occured. Please contact the supervisor.");
         }else if(r === "voted"){
           lobby.app.dialog("You have already voted.<br/>Please don't try to trick me :-)");
         }else{
+          $("#workspace #votedBeep")[0].play();
           $("#workspace #voteForm").fadeOut(500, function(){
-            $("#workspace .thankyou").fadeIn(500);
+            $("#workspace .thankyou").fadeIn(500, function(){
+              setTimeout(function(){
+                lobby.app.redirect("/");
+              }, 5000);
+            });
           });
         }
       });
@@ -99,7 +104,7 @@ lobby.load(function(){
       lobby.app.dialog("Password Should Be a 3 Digit Number");
     }else{
       lobby.app.voterID = clas + div + roll;
-      lobby.app.ajax("login.php", {"id" : lobby.app.voterID, "roll" : roll, "password" : pass}, function(r){
+      lobby.app.ajax("login", {"id" : lobby.app.voterID, "roll" : roll, "password" : pass}, function(r){
         /**
          * Show the vote form
          */

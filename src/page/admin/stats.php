@@ -40,35 +40,39 @@
   }
   
   if($showResults){
+    if($this->config["type"] === "class"){
+      $candidates = $this->EC->getCandidates($class, $div);
+      $votes = $this->EC->count($candidates);
+    }else{
+      $candidates = $this->EC->getCandidates();
+      $votes = $this->EC->count($candidates);
+    }
+    
+    $this->addScript("chart.min.js");
   ?>
     <h2>Graph</h2>
+    <center>
+      <canvas id="chart" width="600" height="400"></canvas>
+    </center>
     <script>
-      $(window).load(function(){
-        lobby.app.ajax("stats-img.php", <?php if($this->config["type"] === "class"){
-          echo json_encode(array(
-            "class" => $class,
-            "division" => $div
-          ));
-        }else{
-          echo "{}";
-        }
-        ?>, function(base64){
-          $("img#stats").attr("src", "data:image/png;base64," + base64);
+      lobby.load(function(){
+        var ctx = $("#workspace #chart")[0].getContext("2d");
+        var myChart = new Chart(ctx).Bar({
+          labels: <?php echo json_encode(array_keys($votes));?>,
+          datasets: [{
+              label: '# of Votes',
+              data: <?php echo json_encode(array_values($votes));?>,
+              borderWidth: 1
+          }]
         });
       });
     </script>
-    <center>
-      <img id="stats" alt="Graph Image Loading..." style='max-width: 100%;' />
-    </center>
     <h2>Standings</h2>
     <?php
     if($this->config["type"] === "single"){
     ?>
       <ol>
         <?php
-        $candidates = $this->EC->getCandidates();
-        $votes = $this->EC->count($candidates);
-        
         foreach($votes as $name => $votes){
           echo "<li>$name - $votes</li>";
         }
@@ -79,9 +83,6 @@
     ?>
       <ol>
         <?php
-        $candidates = $this->EC->getCandidates($class, $div);
-        $votes = $this->EC->count($candidates);
-        
         foreach($votes as $name => $votes){
           echo "<li>$name - $votes</li>";
         }

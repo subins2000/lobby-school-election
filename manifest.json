@@ -4,7 +4,7 @@
   "description" : "An App for school elections.",
   "category" : "accessories",
   "sub_catrgory" : "tools",
-  "version" : "0.1.1",
+  "version" : "0.2",
   "require" : {
     "lobby" : ">=0.9",
     "app/indi" : ">=0.1"
