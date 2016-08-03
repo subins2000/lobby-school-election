@@ -11,6 +11,7 @@
   }
   echo Lobby::l("/admin/app/school-election/config", "General Settings", "class='btn btn-large red'");
   ?>
+  <a href="https://github.com/subins2000/lobby-school-election#school-election" target="_blank" class="btn green btn-large">Help & HowTo Guide</a>
   <div class="row">
     <div class="col m6" style="border-right: 5px dashed #000;">
       <h2>General</h2>
