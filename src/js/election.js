@@ -25,7 +25,7 @@ lobby.app = $.extend(lobby.app, {
 lobby.load(function(){
   /**
   This was for bethany exclusively by Subin 2014
-  lobby.app.ajax("/username.php", function(u){
+  lobby.app.ajax("/username", function(u){
      if(u != "error"){
        lobby.app.voterID = u;
        $("#workspace #voterForm").fadeOut(500, function(){
@@ -114,7 +114,7 @@ lobby.load(function(){
             $("#workspace #voteForm").fadeIn(500);
           });
           if(lobby.app.config["type"] === "class"){
-            lobby.app.ajax("candidates.php", {"class": clas, "division": div}, function(response){
+            lobby.app.ajax("candidates", {"class": clas, "division": div}, function(response){
               $("#workspace #voteForm #candidates").html(response);
             });
           }
@@ -126,12 +126,6 @@ lobby.load(function(){
       });
     }
   });
-  
-  setInterval(function(){
-    lobby.app.ajax("changes.php", {}, function(script){
-      eval(script);
-    });
-  }, 8000);
   
   setInterval(function(){
     if($("#workspace #voteForm").is(":visible")){

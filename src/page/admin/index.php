@@ -48,13 +48,7 @@
     <div class="col m6">
       <h2>Other Tools</h2>
       <div style="margin-top:10px;">
-        <form action="<?php echo \Lobby::u();?>" method="POST" onsubmit="return confirm('Are you sure ?') !== true ? false : true;"><button title="Empty all the data of election stored in database ?" name="clearData" class="btn red">CLEAR ALL DATA !</button></form>
-      </div>
-      <div style="margin-top:10px;">
-        <a href="?action=reload" class="btn" title="All opened election pages will reload if you do this">Reload Election Pages</a>
-      </div>
-      <div style="margin-top:10px;">
-        <a href="?action=reset" class="btn" title="Reset all actions like page reload">Reset Live Actions</a>
+        <form action="<?php echo \Lobby::u();?>" method="POST" onsubmit="return confirm('Are you sure ?') !== true ? false : true;"><button title="This will empty all the data of election stored in database" name="clearData" class="btn red">CLEAR ALL DATA !</button></form>
       </div>
     </div>
   </div>
