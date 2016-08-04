@@ -100,10 +100,12 @@ lobby.load(function(){
       lobby.app.dialog("Alphabetic characters are not valid for a Roll Number");
     }else if(roll.length == 0){
       lobby.app.dialog("Please type in a roll number");
+    }else if(roll > parseInt(lobby.app.config["max-strength"])){
+      lobby.app.dialog("Roll number exceeds max limit");
     }else if(lobby.app.config["password"] === "1" && pass.length != 3){
       lobby.app.dialog("Password Should Be a 3 Digit Number");
     }else{
-      lobby.app.voterID = clas + div + roll;
+      lobby.app.voterID = clas + div.toUpperCase() + parseInt(roll, 10);
       lobby.app.ajax("login", {"id" : lobby.app.voterID, "roll" : roll, "password" : pass}, function(r){
         /**
          * Show the vote form

@@ -3,14 +3,9 @@ if(isset($_POST['vote']) && isset($_POST['candidates']) && isset($_POST['voterID
 	
   if($_SESSION['election-validated'] === "true"){
     $can = $_POST['candidates'];
-    
-    /**
-     * Make sure voterID isn't spoofed
-     */
-		$voterID = $_POST['voterID']; // Gets as "10d29". We then uppercase it later
-    $voterID = ltrim($voterID, '0'); // Remove leading zeros
+		$voterID = $_POST['voterID']; // Gets as "10D29"
 
-		if(!$this->EC->didVote($voterID)){	
+		if(!$this->EC->didVote($voterID)){
 			/**
        * Tell PHP that this student has voted
        */
