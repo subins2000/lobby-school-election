@@ -46,10 +46,14 @@
       $cands = $this->EC->getCandidates();
     }
     
+    $names = array();
     $votes = array();
-    foreach($cands as $cand)
-      $votes[$cand["name"]] = $cand["votes"];
+    foreach($cands as $cand){
+      $names[] = $cand["name"];
+      $votes[] = $cand["votes"];
+    }
     
+    var_dump($votes);
     $this->addScript("chart.min.js");
   ?>
     <h2>Graph</h2>
@@ -60,7 +64,7 @@
       lobby.load(function(){
         var ctx = $("#workspace #chart")[0].getContext("2d");
         var myChart = new Chart(ctx).Bar({
-          labels: <?php echo json_encode(array_keys($votes));?>,
+          labels: <?php echo json_encode($names);?>,
           datasets: [{
               label: '# of Votes',
               data: <?php echo json_encode($votes);?>,

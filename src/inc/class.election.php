@@ -3,6 +3,7 @@ namespace Lobby\App\school_election;
 
 class Election {
 
+  private $candidates = array();
   private $maleCandidates = array();
   private $femaleCandidates = array();
  	
@@ -100,12 +101,6 @@ class Election {
    */
  	public function didVote($id){
  		$id = strtoupper($id);
- 		
-    $votes = $this->app->getJSONData("election_votes");
-    if(!is_array($votes)){
-      $votes = array();
-    }
-      
 		return $this->app->getData("voted-$id") !== null;
  	}
 
@@ -122,10 +117,7 @@ class Election {
      * Increment votes of candidates
      */
     foreach($votedCands as $candID){
-      if(isset($cands[$candID]["votes"]))
-        $cands[$candID]["votes"]++;
-      else
-        $cands[$candID]["votes"] = 1; // The first vote to that candidate
+      $cands[$candID]["votes"]++;
     }
     
     $this->app->saveJSONData("candidates", $cands);
@@ -141,25 +133,6 @@ class Election {
  	public function isElection($type = ""){
  		return !empty($this->candidates);
  	}
-  
-  /**
-   * Get Votes
-   */
-  public function count($candidates){
-    $votes = $this->app->getJSONData("election_votes");
-    $votes = is_array($votes) ? $votes : array();
-    
-    $results = array_fill_keys(array_column($candidates, "name"), 0);
-    
-    foreach($votes as $canID => $vote){
-      foreach($vote as $canID){
-        if(isset($candidates[$canID])){
-          $results[$candidates[$canID]["name"]] = $results[$candidates[$canID]["name"]] + 1;
-        }
-      }
-    }
-    return $results;
-  }
  	
  	/**
    * Clear Data

@@ -9,9 +9,9 @@
   if(isset($_GET["cleared"]))
     echo sss("Successfully Cleared Data", "All Election data has been cleared.");
     
-  echo Lobby::l("/admin/app/school-election/config", "General Settings", "class='btn btn-large red'");
+  echo Lobby::l("/admin/app/school-election/config", "General Settings", "class='btn red'");
   ?>
-  <a href="https://github.com/subins2000/lobby-school-election#school-election" target="_blank" class="btn green btn-large">Help & HowTo Guide</a>
+  <a href="https://github.com/subins2000/lobby-school-election#school-election" target="_blank" class="btn green btn-large">Help, How-To Guide, & Support</a>
   <div class="row">
     <div class="col m6" style="border-right: 5px dashed #000;">
       <h2>General</h2>
@@ -38,11 +38,6 @@
           echo \Lobby::l("/admin/app/school-election/voted", "Voted List", "class='btn red'");
           ?>
         </div>
-        <div style="margin-top:10px;">
-          <?php
-          echo \Lobby::l("/admin/app/school-election/didnt-vote", "Who Didn't Vote ?", "class='btn orange' title='See who did not vote in a class'");
-          ?>
-        </div>
       </div>
     </div>
     <div class="col m6">
@@ -52,4 +47,7 @@
       </div>
     </div>
   </div>
+  <?php
+  echo sme("About This Software", "If you need any help, contact me at <a href='https://www.facebook.com/SubinSiby'>Facebook</a>, <a href='https://plus.google.com/+SubinSiby'>Google+</a> or tweet to <a href='https://twitter.com/SubinSiby'>@SubinSiby</a><cl/>Copyleft (<a href='http://www.apache.org/licenses/LICENSE-2.0'>Apache License v2</a>). <a href='https://github.com/subins2000/lobby-school-election'>Fork</a>, Distribute and Enjoy!");
+  ?>
 </div>
