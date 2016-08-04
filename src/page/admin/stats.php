@@ -53,7 +53,6 @@
       $votes[] = $cand["votes"];
     }
     
-    var_dump($votes);
     $this->addScript("chart.min.js");
   ?>
     <h2>Graph</h2>
