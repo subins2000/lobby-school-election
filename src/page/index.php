@@ -43,7 +43,7 @@ lobby.load(function(){
       </div>
     </form>
     <form action="vote.php" id="voteForm">
-      <div id="candidates">
+      <div id="candidates" class="row">
          <?php $this->EC->showCandidates();?>
       </div>
       <button class="btn vote" name="vote" value="vote">Cast Your Vote</button>

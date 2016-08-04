@@ -41,12 +41,14 @@
   
   if($showResults){
     if($this->config["type"] === "class"){
-      $candidates = $this->EC->getCandidates($class, $div);
-      $votes = $this->EC->count($candidates);
+      $cands = $this->EC->getCandidates($class, $div);
     }else{
-      $candidates = $this->EC->getCandidates();
-      $votes = $this->EC->count($candidates);
+      $cands = $this->EC->getCandidates();
     }
+    
+    $votes = array();
+    foreach($cands as $cand)
+      $votes[$cand["name"]] = $cand["votes"];
     
     $this->addScript("chart.min.js");
   ?>
@@ -61,7 +63,7 @@
           labels: <?php echo json_encode(array_keys($votes));?>,
           datasets: [{
               label: '# of Votes',
-              data: <?php echo json_encode(array_values($votes));?>,
+              data: <?php echo json_encode($votes);?>,
               borderWidth: 1
           }]
         });
@@ -73,8 +75,8 @@
     ?>
       <ol>
         <?php
-        foreach($votes as $name => $votes){
-          echo "<li>$name - $votes</li>";
+        foreach($cands as $cand){
+          echo "<li>{$cand['name']} - {$cand['votes']}</li>";
         }
         ?>
       </ol>
@@ -83,8 +85,8 @@
     ?>
       <ol>
         <?php
-        foreach($votes as $name => $votes){
-          echo "<li>$name - $votes</li>";
+        foreach($cands as $cand){
+          echo "<li>{$cand['name']} - {$cand['votes']}</li>";
         }
         ?>
       </ol>
@@ -96,11 +98,10 @@
           <h4>Boys</h4>
           <ol>
             <?php
-            $candidates = $this->EC->getCandidates("male");
-            $votes = $this->EC->count($candidates);
+            $cands = $this->EC->getCandidates("male");
             
-            foreach($votes as $name => $votes){
-              echo "<li>$name - $votes</li>";
+            foreach($cands as $cand){
+              echo "<li>{$cand['name']} - {$cand['votes']}</li>";
             }
             ?>
           </ol>
@@ -109,11 +110,10 @@
           <h4>Girls</h4>
           <ol>
             <?php
-            $candidates = $this->EC->getCandidates("female");
-            $votes = $this->EC->count($candidates);
+            $cands = $this->EC->getCandidates("female");
             
-            foreach($votes as $name => $votes){
-              echo "<li>$name - $votes</li>";
+            foreach($cands as $cand){
+              echo "<li>{$cand['name']} - {$cand['votes']}</li>";
             }
             ?>
           </ol>

@@ -1,14 +1,14 @@
 <div class="contents">
   <h1>Election Panel</h1>
   <?php
-  if(isset($_GET['action'])){
-    $this->EC->liveChange($_GET['action']);
-    echo sss("Requested For {$_GET['action']}", "The request to reload election page has been sent.");
-  }
   if(isset($_POST['clearData'])){
     $this->EC->clear();
-    echo sss("Successfully Cleared Data", "Election data has been cleared.");
+    Response::redirect($this->adminURL . "?cleared");
   }
+  
+  if(isset($_GET["cleared"]))
+    echo sss("Successfully Cleared Data", "All Election data has been cleared.");
+    
   echo Lobby::l("/admin/app/school-election/config", "General Settings", "class='btn btn-large red'");
   ?>
   <a href="https://github.com/subins2000/lobby-school-election#school-election" target="_blank" class="btn green btn-large">Help & HowTo Guide</a>

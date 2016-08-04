@@ -11,7 +11,14 @@ if($postCandidates !== null){
   });
   $this->removeData("candidates");
   $this->saveJSONData("candidates", $postCandidates);
+  
   $candidates = $this->getJSONData("candidates");
+  foreach($candidates as &$cand){
+    if(!isset($cand["votes"]))
+      $cand["votes"] = 0;
+  }
+  $this->saveJSONData("candidates", $candidates);
+  
   $saved = 1;
 }
 ?>
@@ -74,6 +81,7 @@ if($postCandidates !== null){
       }
     }else if(empty($candidates)){ // Type is either Normal or Boys & Girls
     ?>
+      <a id="add"></a>
       <div class="addCandidateRows">
         <div class="valign-wrapper row" data-id="0">
           <input type="text" class="valign col b8" name="candidates[0][name]" placeholder="Candidate name" />
@@ -86,6 +94,7 @@ if($postCandidates !== null){
       </div>
     <?php
     }else{
+      echo "<a id='add'></a>";
       foreach($candidates as $id => $candidate){
     ?>
         <div class="addCandidateRows">

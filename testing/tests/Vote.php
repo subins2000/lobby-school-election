@@ -1,6 +1,7 @@
 <?php
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverSelect;
+use Facebook\WebDriver\WebDriverWait;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 
@@ -27,17 +28,15 @@ class Vote extends PHPUnit_Framework_TestCase {
   
   public function testPasswordToggle(){
     $this->driver->get(LOBBY_URL . "/app/school-election");
-    $this->assertContains("Password", $this->driver->getPageSource());
+    $this->assertNotContains("Password", $this->driver->getPageSource());
     
     $this->togglePasswordFeature();
     
     $this->driver->get(LOBBY_URL . "/app/school-election");
-    $this->assertNotContains("Password", $this->driver->getPageSource());
+    $this->assertContains("Password", $this->driver->getPageSource());
   }
   
   public function testVoting(){
-    $this->togglePasswordFeature();
-    
     for($i=1;$i < 10;$i++){
       $this->driver->get(LOBBY_URL . "/app/school-election");
       
@@ -49,6 +48,12 @@ class Vote extends PHPUnit_Framework_TestCase {
       
       $this->driver->findElement(WebDriverBy::cssSelector("#voterForm [name=roll]"))->sendKeys($i);
       $this->driver->findElement(WebDriverBy::cssSelector("#voterForm"))->submit();
+      
+      $wait = new WebDriverWait($this->driver, 5);
+      $driver = $this->driver;
+      $wait->until(function() use($driver){
+        return count($driver->findElements(WebDriverBy::cssSelector("#voteForm .candidate"))) > 2;
+      });
       
       $candidates = $this->driver->findElements(WebDriverBy::cssSelector("#voteForm .candidate"));
       shuffle($candidates);

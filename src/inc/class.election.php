@@ -6,6 +6,9 @@ class Election {
   private $maleCandidates = array();
   private $femaleCandidates = array();
  	
+  /**
+   * @param $app Instance of Lobby\App
+   */
  	public function __construct($app){
     $this->config = $app->config;
     $this->app = $app;
@@ -44,7 +47,7 @@ class Election {
  		$html = "";
     if($this->isElection()){
       foreach($data as $id => $candidate){
- 			  $html .= "<div class='candidate'>";
+ 			  $html .= "<div class='candidate col s4'>";
  				  $html .= "<label>";
             $html .= "<input type='checkbox' name='candidates[]' value='$id' />";
             $html .= "<span>{$candidate["name"]}</span>";
@@ -103,24 +106,32 @@ class Election {
       $votes = array();
     }
       
-		return isset($votes[$id]) === false ? false : true;
+		return $this->app->getData("voted-$id") !== null;
  	}
 
  	
  	/**
-   * This is the updatal of candidate vote
+   * Do a Vote
+   * @param string $voterID The voter's ID
+   * @param array $votedCands The ID of candidates voter chose
    */
- 	public function vote($voterID, $candidates){
- 		if($voterID != ""){
- 			$voterID = strtoupper($voterID); // I have no idea why I chose upper case characters
-      $votes = $this->app->getJSONData("election_votes");
-      
-      if(!is_array($votes)){
-        $votes = array();
-      }
-      $votes[$voterID] = $candidates;
-      $this->app->saveJSONData("election_votes", $votes);
- 		}
+ 	public function vote($voterID, $votedCands){
+    $cands = $this->app->getJSONData("candidates");
+    
+    /**
+     * Increment votes of candidates
+     */
+    foreach($votedCands as $candID){
+      if(isset($cands[$candID]["votes"]))
+        $cands[$candID]["votes"]++;
+      else
+        $cands[$candID]["votes"] = 1; // The first vote to that candidate
+    }
+    
+    $this->app->saveJSONData("candidates", $cands);
+  
+    $voterID = strtoupper($voterID); // I have no idea why I chose upper case characters
+    $this->app->saveData("voted-$voterID", 1);
  	}
  	
  	/**
@@ -129,21 +140,6 @@ class Election {
    */
  	public function isElection($type = ""){
  		return !empty($this->candidates);
- 	}
- 	
- 	/**
-   * Make changes to the live election page
-   */
- 	public function liveChange($type = ""){
- 		$codes = array(
- 			"reload" => "window.location = window.location;",
- 			"reset"  => "1"
- 		);
- 		if( isset($codes[$type]) ){
- 			$this->app->saveData("election_ajax_script", $codes[$type]);
- 		}else{
- 			return false;
- 		}
  	}
   
   /**
@@ -169,9 +165,8 @@ class Election {
    * Clear Data
    */
  	public function clear(){
-    $this->app->removeData("candidates");
-    $this->app->removeData("student_passwords");
-    $this->app->removeData("election_votes");
+    $App = new \Lobby\Apps("school-election");
+    $App->clearData();
  	}
 }
 ?>
