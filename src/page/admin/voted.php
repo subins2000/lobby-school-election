@@ -66,6 +66,11 @@ $roll = Request::getParam("roll");
     if(empty($voted)){
       echo ser("Nobody has voted", "Looks like nobody has voted in this class");
     }else{
+      echo "<h4>Summary</h4>";
+      echo "<table><tbody>";
+        echo "<tr><td>Number of students who voted</td><td><b>" . count($voted) . "</b></td></tr>";
+        echo "<tr><td>Number of students who didn't vote</td><td><b>" . count($didntVote) . "</b></td></tr>";
+      echo "</tbody></table>";
       echo "<p>The lists below shows voters in <b>ascending order of roll number</b>.</p>";
       echo "<h4>Students who voted</h4><table><thead><th>Voter ID</th><th>When he/she voted</th></thead><tbody>";
       foreach($voted as $vote){
