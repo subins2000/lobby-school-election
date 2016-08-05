@@ -9,15 +9,17 @@ if($postCandidates !== null){
   $postCandidates = array_filter($postCandidates, function($val){
     return $val["name"] != "";
   });
+  
+  foreach($postCandidates as $id => &$cand){
+    if(isset($candidates[$id]))
+      $cand["votes"] = $candidates[$id]["votes"];
+    else
+      $cand["votes"] = 0;
+  }
   $this->removeData("candidates");
   $this->saveJSONData("candidates", $postCandidates);
   
-  $candidates = $this->getJSONData("candidates");
-  foreach($candidates as &$cand){
-    if(!isset($cand["votes"]))
-      $cand["votes"] = 0;
-  }
-  $this->saveJSONData("candidates", $candidates);
+  $candidates = $postCandidates;
   
   $saved = 1;
 }
