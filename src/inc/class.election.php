@@ -48,10 +48,10 @@ class Election {
  		$html = "";
     if($this->isElection()){
       foreach($data as $id => $candidate){
- 			  $html .= "<div class='candidate col s4'>";
+ 			  $html .= "<div class='candidate col s4 truncate'>";
  				  $html .= "<label>";
             $html .= "<input type='checkbox' name='candidates[]' value='$id' />";
-            $html .= "<span>{$candidate["name"]}</span>";
+            $html .= "<span title='{$candidate["name"]}'>{$candidate["name"]}</span>";
           $html .= "</label>";
    			$html .= "</div>";
  		  }
