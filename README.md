@@ -10,12 +10,17 @@ It is a really simple app and is very much configurable.
 
 This app can be used for two types of elections :
 
-* Normal Election - Vote persons from a list
-* Boys & Girls - Vote persons from **two lists** of boys and girls
+* Normal Election - Vote candidates from a list
+* Class Wise - Vote candidates in each class
+* Boys & Girls - Vote candidates from **two lists** of boys and girls
 
 #### Normal Election `single`
 
 This is the **default** election type. There is **only one list** for all candidates (irrespective of gender) and the voter can choose from this list.
+
+#### Class Wise `class`
+
+Each classes vote separate for the candidates in their class. So, candidates can be added for each class and voting can be done.
 
 #### Boys & Girls `multiple`
 
@@ -57,10 +62,20 @@ When a voter visits the election page, which class should be seen selected ?
 
 When a voter visits the election page, which division should be seen selected ?
 
+### disable-class-div-change
+
+By default the student can choose the class and division. You can prevent theme from doing so by enabling this option.
+
+`1` to prevent students from choosing the class and division.
+
+`0` to allow students from choosing the class and division.
+
 ## Bethany
 
 Don't mind this if you are not from Bethany
 
 1) Make Squid pass username with URL requests
+
 2) Make Database with table in tables.sql file
+
 3) Run install.sh to change permissions

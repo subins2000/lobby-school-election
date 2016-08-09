@@ -27,7 +27,8 @@ $this->addStyle("config.css");
         "able-to-choose" => $ableToChoose,
         "password" => isset($_POST["password"]) ? "1" : "0",
         "default-class" => $defaultClass,
-        "default-division" => $defaultDiv
+        "default-division" => $defaultDiv,
+        "disable-class-div-change" => isset($_POST["disable-class-div-change"]) ? "1" : "0"
       );
       $newConfig = $submitConfig + $this->config;
       $newConfig = array_replace($newConfig, $submitConfig);
@@ -41,7 +42,7 @@ $this->addStyle("config.css");
   }
   ?>
   <form action="<?php echo Lobby::u();?>" method="POST">
-    <label>
+    <label class="form-field">
       <span><a href="https://github.com/subins2000/lobby-school-election#type" target="_blank">Election Type</a></span>
       <select name="type">
         <option value="single">Normal Election</option>
@@ -49,22 +50,22 @@ $this->addStyle("config.css");
         <option value="multiple" <?php if($this->config["type"] === "multiple"){echo "selected='selected'";}?>>Boys & Girls</option>
       </select>
     </label>
-    <label>
+    <label class="form-field">
       <span><a href="https://github.com/subins2000/lobby-school-election#able-to-choose" target="_blank">Number of Votes</a></span>
       <input type="number" name="votes" placeholder="How may votes can the student make ?"  value="<?php echo $this->config["able-to-choose"];?>" />
     </label>
-    <label>
+    <label class="form-field">
       <span><a href="https://github.com/subins2000/lobby-school-election#max-strength" target="_blank">Maximum Strength</a></span>
       <input type="number" name="strength" value="<?php echo $this->config["max-strength"];?>" />
     </label>
-    <div>
+    <div class="form-field">
       <span><a href="https://github.com/subins2000/lobby-school-election#password" target="_blank">Password For Voters</a></span><cl/>
       <label>
         <input type="checkbox" name="password" <?php if($this->config["password"] === "1"){echo "checked='checked'";}?> />
-        <span>Password</span>
+        <span>Enable password for each roll numbers</span>
       </label>
     </div>
-    <div id="classes" class="row" style="margin-top: 10px;">
+    <div id="classes" class="row form-field">
       <span class="col s12"><a href="https://github.com/subins2000/lobby-school-election#classes" target="_blank">Classes</a><a id="add"></a></span>
       <?php
       foreach($this->config["classes"] as $class){
@@ -77,7 +78,7 @@ $this->addStyle("config.css");
       }
       ?>
     </div>
-    <div id="divisions" class="row">
+    <div id="divisions" class="row form-field">
       <span class="col s12"><a href="https://github.com/subins2000/lobby-school-election#divisions" target="_blank">Divisions</a><a id="add"></a></span>
       <?php
       foreach($this->config["divisions"] as $div){
@@ -93,7 +94,7 @@ $this->addStyle("config.css");
     <?php
     if(!empty($this->config["classes"])){
     ?>
-      <label>
+      <label class="form-field">
         <span><a href="https://github.com/subins2000/lobby-school-election#default-class" target="_blank">Default Class</a></span>
         <select name="default-class">
           <?php
@@ -107,7 +108,7 @@ $this->addStyle("config.css");
     }
     if(!empty($this->config["divisions"])){
     ?>
-      <label>
+      <label class="form-field">
         <span><a href="https://github.com/subins2000/lobby-school-election#default-division" target="_blank">Default Division</a></span>
         <select name="default-division">
           <?php
@@ -120,7 +121,14 @@ $this->addStyle("config.css");
     <?php
     }
     ?>
+    <div class="form-field">
+      <span><a href="https://github.com/subins2000/lobby-school-election#disable-class-div-change" target="_blank">Disable choice of class and division</a></span><cl/>
+      <label>
+        <input type="checkbox" name="disable-class-div-change" <?php if($this->config["disable-class-div-change"] === "1"){echo "checked='checked'";}?> />
+        <span>Prevent student from choosing class & division</span>
+      </label>
+    </div>
     <?php echo CSRF::getInput();?>
-    <button class="btn green" clear="1">Save Settings</button>
+    <button class="btn green">Save Settings</button>
   </form>
 </div>

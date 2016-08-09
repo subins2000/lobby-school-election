@@ -13,8 +13,8 @@ lobby.load(function(){
   });
   
   $("#workspace #divisions #add").on("click", function(){
-    $("#workspace #classes").append('<div class="valign-wrapper col s6"><input type="text" name="divs[]" class="valign" /><a id="remove" class="valign"></a></div>');
-    $("#workspace #classes input:last").focus();
+    $("#workspace #divisions").append('<div class="valign-wrapper col s6"><input type="text" name="divs[]" class="valign" /><a id="remove" class="valign"></a></div>');
+    $("#workspace #divisions input:last").focus();
   });
   
   $("#workspace #remove").live("click", function(){

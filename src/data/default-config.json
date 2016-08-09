@@ -11,5 +11,6 @@
   "password" : "0",
   "remember-options" : "0",
   "default-class" : "5",
-  "default-division" : "A"
+  "default-division" : "A",
+  "disable-class-div-change" : "0"
 }
