@@ -1,4 +1,5 @@
 <?php
+$this->addStyle("create-users.css");
 $this->setTitle("Generate User Passwords");
 ?>
 <div class="contents">
@@ -21,26 +22,22 @@ $this->setTitle("Generate User Passwords");
     $passwords = range(100, 999);
     shuffle($passwords);
     
-    echo "<table><tbody>";
-      echo "<thead><tr><td>Roll Number</td><td>Password</td></tr></thead>";
-      for($i = 1; $i < $no + 1;$i++){
-        $password = $passwords[$i];
-        $data[$i] = $password;
-        echo "<tr><td>$i</td><td>$password</td></tr>";
-      }
-    echo "</tbody></table>";
+    for($i = 1; $i < $no + 1;$i++){
+      $password = $passwords[$i];
+      $data[$i] = $password;
+      echo "<div class='card roll-card'><span class='roll-no'>$i</span> - <span class='pass'>$password</span></div>";
+    }
     $this->removeData("student_passwords");
     $this->saveJSONData("student_passwords", $data);
   }else{
     $passwords = $this->getJSONData("student_passwords");
-    if($passwords !== null){
+    if(empty($passwords)){
+      echo sme("Passwords Not Set", "No passwords have been generated.");
+    }else{
       echo "<h2>Passwords</h2>";
-      echo "<table><tbody>";
-        echo "<thead><tr><td>Roll Number</td><td>Password</td></tr></thead>";
-        foreach($passwords as $i => $password){
-          echo "<tr><td>$i</td><td>$password</td></tr>";
-        }
-      echo "</tbody></table>";
+      foreach($passwords as $i => $password){
+        echo "<div class='roll-card card'><span class='roll-no'>$i</span> - <span class='pass'>$password</span></div>";
+      }
     }
   }
   ?>

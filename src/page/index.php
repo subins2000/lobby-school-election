@@ -12,7 +12,7 @@ lobby.load(function(){
   <div id="content" class="valign">
     <form action="info.php" id="voterForm">
       <h2>Class</h2>
-      <select name="class">
+      <select name="class" <?php if($this->config["disable-class-div-change"] == "1"){ echo "disabled='disabled'";} ?>>
         <?php
         foreach($this->config['classes'] as $class){
           echo "<option value='$class' ". ($this->config["default-class"] === $class ? "selected='selected'" : "") .">$class</option>";
@@ -20,7 +20,7 @@ lobby.load(function(){
         ?>
       </select>
       <h2>Division</h2>
-      <select name="division">
+      <select name="division" <?php if($this->config["disable-class-div-change"] == "1"){ echo "disabled='disabled'";} ?>>
         <?php
         $divs = $this->config['divisions'];
         foreach($divs as $div){
