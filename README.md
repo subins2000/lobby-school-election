@@ -1,8 +1,10 @@
-# School Election
+# sElec
 
 A Lobby app for conducting school elections. This was made for **Bethany St John's Kunnamkulam** and **GMGHSS Kunnamkulam** schools.
 
 It is a really simple app and is very much configurable.
+
+[Manual, Documentation, Help](http://subinsb.com/school-election)
 
 ## Configuration
 

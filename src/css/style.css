@@ -80,3 +80,6 @@
 #workspace #votedBeep{
   display: none;
 }
+.ui-front{
+  z-index: 2000;
+}

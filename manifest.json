@@ -1,10 +1,10 @@
 {
-  "name" : "School Election",
+  "name" : "sElec",
   "short_description" : "An App for school elections",
   "description" : "An App for school elections.",
   "category" : "accessories",
   "sub_catrgory" : "tools",
-  "version" : "0.5",
+  "version" : "0.5.1",
   "require" : {
     "lobby" : ">=0.9",
     "app/indi" : ">=0.1"
@@ -12,5 +12,5 @@
   "logo" : "true",
   "author" : "Subin Siby",
   "author_page" : "http://subinsb.com",
-  "app_page" : "http://subinsb.com/lobby/app-school-election"
+  "app_page" : "http://subinsb.com/school-election"
 }
